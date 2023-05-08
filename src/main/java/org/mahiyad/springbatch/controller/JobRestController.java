@@ -2,12 +2,15 @@ package org.mahiyad.springbatch.controller;
 
 import org.mahiyad.springbatch.config.processor.BankTransactionItemAnalyticsProcessor;
 import org.springframework.batch.core.*;
+import org.springframework.batch.core.explore.JobExplorer;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -15,6 +18,7 @@ public class JobRestController {
     @Autowired private JobLauncher jobLauncher;
     @Autowired private Job job;
     @Autowired private BankTransactionItemAnalyticsProcessor analyticsProcessor;
+
 
 
     @GetMapping("/startJob")
@@ -37,6 +41,9 @@ public class JobRestController {
         map.put("Total Debit : ",analyticsProcessor.getTotalDebit());
         return map;
     }
+
+
+
 
 
 }
