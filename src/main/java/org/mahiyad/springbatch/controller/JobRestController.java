@@ -15,9 +15,11 @@ import java.util.Map;
 
 @RestController
 public class JobRestController {
+
     @Autowired private JobLauncher jobLauncher;
     @Autowired private Job job;
     @Autowired private BankTransactionItemAnalyticsProcessor analyticsProcessor;
+
 
 
 
@@ -29,10 +31,13 @@ public class JobRestController {
         JobParameters jobParameters = new JobParameters(jobParams);
         JobExecution jobExecution = jobLauncher.run(job,jobParameters);
         while (jobExecution.isRunning()){
+            Thread.sleep(10000);
             System.out.println(".....");
         }
         return jobExecution.getStatus();
     }
+
+
 
     @GetMapping("/analytics")
     public Map<String,Double> analytics(){
@@ -41,6 +46,8 @@ public class JobRestController {
         map.put("Total Debit : ",analyticsProcessor.getTotalDebit());
         return map;
     }
+
+
 
 
 

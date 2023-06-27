@@ -29,6 +29,7 @@ import java.util.List;
 @EnableBatchProcessing
 @Configuration
 public class SpringBatchConfig {
+
     @Autowired private JobBuilderFactory jobBuilderFactory;
     @Autowired private StepBuilderFactory stepBuilderFactory;
     @Autowired private ItemReader<BankTransaction> bankTransactionItemReader;
@@ -43,7 +44,7 @@ public class SpringBatchConfig {
                 .processor(compositeItemProcessor())
                 .writer(bankTransactionItemWriter)
                 .build();
-        return jobBuilderFactory.get("bank-data-loader-job")
+        return jobBuilderFactory.get("PurgeIOFile")
                 .start(step1).build();
     }
 

@@ -1,9 +1,20 @@
 package org.mahiyad.springbatch.service;
 
-import org.mahiyad.springbatch.data.entities.BatchJobInstance;
+
+import org.mahiyad.springbatch.data.entities.BatchJobExecution;
 
 import java.util.List;
 
 public interface BatchService {
-    List<BatchJobInstance> findAllJob();
+
+
+    List<BatchJobExecution> getAllExecution();
+
+
+    long countCompletedJobExecutions();
+
+    long countFailedJobExecutions();
+    long countStoppedJobExecutions();
+
+
 }
