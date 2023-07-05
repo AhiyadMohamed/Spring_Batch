@@ -12,4 +12,11 @@ public interface BatchJobIntanceRepository extends JpaRepository<BatchJobInstanc
 
     @Query("SELECT DISTINCT j.jobName FROM BatchJobInstance j")
     List<String> findDistinctJobNames();
+
+    @Query("SELECT COUNT(DISTINCT ji.jobName) FROM BatchJobInstance ji WHERE ji.jobName IS NOT NULL")
+    int countDistinctBatchInstances();
+
+    @Query("SELECT ji.jobName, COUNT(ji) FROM BatchJobInstance ji GROUP BY ji.jobName")
+    List<Object[]> countJobInstancesByJobName();
+
 }

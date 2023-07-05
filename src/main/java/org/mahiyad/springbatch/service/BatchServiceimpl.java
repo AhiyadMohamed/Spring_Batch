@@ -16,10 +16,18 @@ public class BatchServiceimpl implements BatchService{
     @Autowired
     private BatchjobexecutionRepository jobExecutionRepository;
 
+    @Autowired
+    private BatchJobIntanceRepository batchJobIntanceRepository;
+
 
     @Override
     public List<BatchJobExecution> getAllExecution() {
         return jobExecutionRepository.findAll();
+    }
+
+    @Override
+    public List<String> listBatch() {
+        return batchJobIntanceRepository.findDistinctJobNames();
     }
 
     @Override
@@ -38,6 +46,20 @@ public class BatchServiceimpl implements BatchService{
     }
 
 
+    @Override
+    public int countDistinctBatches() {
+        return batchJobIntanceRepository.countDistinctBatchInstances();
+    }
+
+    @Override
+    public List<Object[]> countJobInstancesByJobName() {
+        return batchJobIntanceRepository.countJobInstancesByJobName();
+    }
+
+    @Override
+    public List<BatchJobExecution> searchByBatchName(String keyword) {
+        return jobExecutionRepository.findByJobNameContaining(keyword);
+    }
 
 
 }

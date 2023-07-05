@@ -10,6 +10,7 @@ public interface BatchService {
 
     List<BatchJobExecution> getAllExecution();
 
+    List<String> listBatch();
 
     long countCompletedJobExecutions();
 
@@ -17,4 +18,9 @@ public interface BatchService {
     long countStoppedJobExecutions();
 
 
+    int countDistinctBatches();
+
+    List<Object[]> countJobInstancesByJobName();
+
+    List<BatchJobExecution> searchByBatchName(String keyword);
 }
