@@ -12,6 +12,7 @@ public class BankTransactionItemProcessor implements ItemProcessor<BankTransacti
     private SimpleDateFormat dateFormat  = new SimpleDateFormat("dd/MM/YYYY-HH:mm");
     @Override
     public BankTransaction process(BankTransaction bankTransaction) throws Exception {
+        Thread.sleep(10000);
         bankTransaction.setTransactionDate(dateFormat.parse(bankTransaction.getStrTransactionDate()));
         return bankTransaction;
     }

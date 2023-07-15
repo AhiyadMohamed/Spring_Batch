@@ -23,8 +23,6 @@ public class BatchController {
     @Autowired
     private BatchJobIntanceRepository jobInstanceRepository;
 
-    @Autowired
-    private BatchjobexecutionRepository batchjobexecutionRepository;
 
     @GetMapping("/execution")
     List<BatchJobExecution> getAllExecution(){
@@ -42,7 +40,7 @@ public class BatchController {
         return batchService.countFailedJobExecutions();
     }
 
-    @GetMapping("/stopped-count")
+        @GetMapping("/stopped-count")
     public long getStoppedJobExecutionsCount(){
         return batchService.countStoppedJobExecutions();
     }

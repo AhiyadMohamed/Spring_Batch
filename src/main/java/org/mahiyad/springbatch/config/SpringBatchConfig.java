@@ -22,9 +22,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
-
 import java.util.ArrayList;
 import java.util.List;
+
 
 @EnableBatchProcessing
 @Configuration
@@ -37,14 +37,17 @@ public class SpringBatchConfig {
 
 
     @Bean
-    public Job bankJob() {
+    public Job bankJob(){
+
         Step step1 = stepBuilderFactory.get("step-load-data")
                 .<BankTransaction, BankTransaction>chunk(100)
                 .reader(bankTransactionItemReader)
                 .processor(compositeItemProcessor())
                 .writer(bankTransactionItemWriter)
                 .build();
-        return jobBuilderFactory.get("PurgeIOFile")
+
+        return
+                jobBuilderFactory.get("job1")
                 .start(step1).build();
     }
 
@@ -58,7 +61,6 @@ public class SpringBatchConfig {
         compositeItemProcessor.setDelegates(itemProcessors);
         return compositeItemProcessor;
     }
-
 
 
     //Instantiation des classes a Partir d une methode == @Component
@@ -76,7 +78,7 @@ public class SpringBatchConfig {
 
 
     @Bean
-    public FlatFileItemReader<BankTransaction> flatFileItemReader(@Value("${inputFile}") Resource inputFile) {
+    public FlatFileItemReader<BankTransaction> flatFileItemReader(@Value("${inputFile}") Resource inputFile)  {
         FlatFileItemReader<BankTransaction> fileItemReader = new FlatFileItemReader<>();
         fileItemReader.setName("FFIR1");
         fileItemReader.setLinesToSkip(1);
@@ -100,6 +102,7 @@ public class SpringBatchConfig {
         return lineMapper;
 
     };
+
 
 
 
