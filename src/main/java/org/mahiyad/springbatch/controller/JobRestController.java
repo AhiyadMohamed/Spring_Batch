@@ -54,11 +54,23 @@ public class JobRestController {
 
 
 
-        @PostMapping("/{jobName}/stop")
+       // @PostMapping("/{jobName}/stop")
         public void stopBatch(@PathVariable String jobName) throws NoSuchJobExecutionException, JobExecutionNotRunningException {
             jobService.stopBatchByName(jobName);
         }
 
 
+        // 2 Eme
+
+    @PostMapping("/{jobName}/stop")
+    public ResponseEntity<String> stopJob(@PathVariable String jobName) throws NoSuchJobExecutionException, JobExecutionNotRunningException {
+        boolean batchStopped = jobService.stopJobByName(jobName);
+
+        if (batchStopped) {
+            return ResponseEntity.ok("Batch stopped successfully.");
+        } else {
+            return ResponseEntity.badRequest().body("No batch is currently running for the specified job.");
+        }
+    }
 
 }
