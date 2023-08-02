@@ -47,7 +47,7 @@ public class SpringBatchConfig {
                 .build();
 
         return
-                jobBuilderFactory.get("job1")
+                jobBuilderFactory.get("ImportCSVToDatabaseBatch")
                 .start(step1).build();
     }
 
