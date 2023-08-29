@@ -23,4 +23,6 @@ public interface BatchService {
     List<Object[]> countJobInstancesByJobName();
 
     List<BatchJobExecution> searchByBatchName(String keyword);
+
+
 }

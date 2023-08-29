@@ -6,8 +6,6 @@ import org.mahiyad.springbatch.data.repositories.BatchjobexecutionRepository;
 import org.mahiyad.springbatch.service.BatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-
 import java.util.List;
 
 
@@ -16,19 +14,20 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 public class BatchController {
 
-
     @Autowired
     private BatchService batchService;
 
     @Autowired
     private BatchJobIntanceRepository jobInstanceRepository;
 
+    @Autowired
+    private BatchjobexecutionRepository batchjobexecutionRepository;
+
 
     @GetMapping("/execution")
     List<BatchJobExecution> getAllExecution(){
         return batchService.getAllExecution();
     }
-
 
     @GetMapping("/completed-count")
     public long getCompletedJobExecutionsCount() {
@@ -40,7 +39,7 @@ public class BatchController {
         return batchService.countFailedJobExecutions();
     }
 
-        @GetMapping("/stopped-count")
+    @GetMapping("/stopped-count")
     public long getStoppedJobExecutionsCount(){
         return batchService.countStoppedJobExecutions();
     }
@@ -69,6 +68,11 @@ public class BatchController {
     @GetMapping("/search/{keyword}")
     public List<BatchJobExecution> searchByBatchName(@PathVariable String keyword) {
         return batchService.searchByBatchName(keyword);
+    }
+
+    @GetMapping("/job-executions-and-logs")
+    public List<Object[]> getJobExecutionsAndLogs() {
+        return batchjobexecutionRepository.getJobExecutionsAndLogs();
     }
 
 

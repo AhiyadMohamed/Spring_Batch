@@ -27,20 +27,6 @@ public class JobService {
     private JobOperator jobOperator;
 
 
-    public void stopBatchByName(String jobName) throws NoSuchJobExecutionException, JobExecutionNotRunningException {
-        List<JobInstance> jobInstances = jobExplorer.getJobInstances(jobName, 0, Integer.MAX_VALUE);
-
-        for (JobInstance jobInstance : jobInstances) {
-            List<JobExecution> executions = jobExplorer.getJobExecutions(jobInstance);
-
-            for (JobExecution execution : executions) {
-                if (execution.getStatus() == BatchStatus.STARTED || execution.getStatus() == BatchStatus.STARTING) {
-                    jobOperator.stop(execution.getId());
-
-                }
-            }
-        }
-    }
 
     //2 Eme
     public boolean stopJobByName(String jobName) throws NoSuchJobExecutionException, JobExecutionNotRunningException {

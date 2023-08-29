@@ -1,5 +1,6 @@
 package org.mahiyad.springbatch.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.mahiyad.springbatch.config.processor.BankTransactionItemAnalyticsProcessor;
 import org.mahiyad.springbatch.config.processor.BankTransactionItemProcessor;
 import org.mahiyad.springbatch.data.entities.BankTransaction;
@@ -28,26 +29,29 @@ import java.util.List;
 
 @EnableBatchProcessing
 @Configuration
-public class SpringBatchConfig {
+@Slf4j
+public class  SpringBatchConfig {
 
-    @Autowired private JobBuilderFactory jobBuilderFactory;
-    @Autowired private StepBuilderFactory stepBuilderFactory;
-    @Autowired private ItemReader<BankTransaction> bankTransactionItemReader;
-    @Autowired private ItemWriter<BankTransaction> bankTransactionItemWriter;
+    @Autowired
+    private JobBuilderFactory jobBuilderFactory;
+    @Autowired
+    private StepBuilderFactory stepBuilderFactory;
+    @Autowired
+    private ItemReader<BankTransaction> bankTransactionItemReader;
+    @Autowired
+    private ItemWriter<BankTransaction> bankTransactionItemWriter;
 
 
     @Bean
     public Job bankJob(){
-
         Step step1 = stepBuilderFactory.get("step-load-data")
                 .<BankTransaction, BankTransaction>chunk(100)
                 .reader(bankTransactionItemReader)
                 .processor(compositeItemProcessor())
                 .writer(bankTransactionItemWriter)
                 .build();
-
         return
-                jobBuilderFactory.get("ImportCSVToDatabaseBatch")
+                jobBuilderFactory.get("purgeAuditableTablesJob")
                 .start(step1).build();
     }
 
@@ -56,7 +60,6 @@ public class SpringBatchConfig {
         List<ItemProcessor<BankTransaction,BankTransaction>> itemProcessors = new ArrayList<>();
         itemProcessors.add(itemProcessor1());
         itemProcessors.add(itemProcessor2());
-
         CompositeItemProcessor<BankTransaction,BankTransaction> compositeItemProcessor = new CompositeItemProcessor<>();
         compositeItemProcessor.setDelegates(itemProcessors);
         return compositeItemProcessor;
@@ -76,7 +79,6 @@ public class SpringBatchConfig {
     }
 
 
-
     @Bean
     public FlatFileItemReader<BankTransaction> flatFileItemReader(@Value("${inputFile}") Resource inputFile)  {
         FlatFileItemReader<BankTransaction> fileItemReader = new FlatFileItemReader<>();
@@ -87,6 +89,7 @@ public class SpringBatchConfig {
         return fileItemReader;
 
     }
+
 
     @Bean
     public LineMapper<BankTransaction> lineMapper() {
@@ -102,9 +105,5 @@ public class SpringBatchConfig {
         return lineMapper;
 
     };
-
-
-
-
 
 }

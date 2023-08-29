@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 
 
@@ -22,10 +21,13 @@ public interface BatchjobexecutionRepository extends JpaRepository<BatchJobExecu
     @Query("SELECT COUNT(je) FROM BatchJobExecution je WHERE je.status = 'STOPPED'")
     long stoppedFailedJobExecutions();
 
-
-
     @Query("SELECT je FROM BatchJobExecution je WHERE je.jobInstance.jobName LIKE %:keyword%")
     List<BatchJobExecution> findByJobNameContaining(@Param("keyword") String keyword);
+
+    @Query("SELECT je, l FROM BatchJobExecution je " +
+            "LEFT JOIN Log l ON l.id = je.id")
+    List<Object[]> getJobExecutionsAndLogs();
+
 
 
 }
